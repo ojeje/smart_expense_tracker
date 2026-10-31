@@ -1,0 +1,12 @@
+{
+  "name": "smart-expense-tracker",
+  "version": "1.0.0",
+  "description": "Smart Expense Tracker for ABC & Co Inc",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test_smart_expense_tracker.js && node test_frontend_units.js"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Smart Expense Tracker for ABC & Co Inc">
+  <title>Smart Expense Tracker</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>Smart Expense Tracker</h1>
+      <p class="subtitle">Track and manage your expenses effortlessly</p>
+    </header>
+
+    <!-- Error Alert Banner -->
+    <div id="error-banner" class="error-banner hidden" role="alert" aria-live="assertive">
+      <span class="error-icon" aria-hidden="true">&#9888;</span>
+      <span id="error-message" class="error-text"></span>
+    </div>
+
+    <!-- Data Entry Form Section -->
+    <section class="form-section card" aria-labelledby="form-heading">
+      <h2 id="form-heading" class="section-title">Add New Expense</h2>
+      <form id="expense-form" novalidate>
+        <div class="form-grid">
+          <!-- Customer Name -->
+          <div class="form-group">
+            <label for="customer-name">Customer Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="customer-name" 
+              name="customer_name" 
+              placeholder="Enter customer name" 
+              autocomplete="off"
+              required>
+          </div>
+
+          <!-- Amount in USD -->
+          <div class="form-group">
+            <label for="amount">Amount in USD ($) <span class="required">*</span></label>
+            <input 
+              type="number" 
+              id="amount" 
+              name="amount" 
+              placeholder="0.00" 
+              step="0.01" 
+              min="0.01" 
+              required>
+          </div>
+
+          <!-- Category Selection -->
+          <div class="form-group">
+            <label for="category">Category <span class="required">*</span></label>
+            <select id="category" name="category" required>
+              <option value="default" disabled selected>Select a category</option>
+              <option value="Food">Food</option>
+              <option value="Travel">Travel</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Custom">Custom</option>
+            </select>
+          </div>
+
+          <!-- Custom Category Input (Dynamically Toggled) -->
+          <div id="custom-category-group" class="form-group hidden">
+            <label for="custom-category">Custom Category Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="custom-category" 
+              name="custom_category" 
+              placeholder="Enter custom category" 
+              autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="btn-submit" class="btn btn-primary">Add Expense</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Total Spent Summary Card -->
+    <section class="summary-section card" aria-labelledby="total-heading">
+      <div class="total-container">
+        <span id="total-heading" class="total-label">Total Amount Spent:</span>
+        <span id="total-amount" class="total-value" aria-live="polite">$0.00</span>
+      </div>
+    </section>
+
+    <!-- Expense Records List / Table Section -->
+    <section class="list-section card" aria-labelledby="list-heading">
+      <h2 id="list-heading" class="section-title">Expense Records</h2>
+      
+      <!-- Empty State Notice -->
+      <div id="empty-state" class="empty-state">
+        <p>No expenses recorded yet.</p>
+      </div>
+
+      <!-- Expense Table -->
+      <div class="table-responsive">
+        <table id="expense-table" class="expense-table hidden" aria-describedby="list-heading">
+          <thead>
+            <tr>
+              <th scope="col">Customer Name</th>
+              <th scope="col" class="text-right">Amount (USD)</th>
+              <th scope="col">Category</th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="expense-table-body">
+            <!-- Dynamic Expense Rows Injected Here -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- Native ES Module Application Bootstrap -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
+
