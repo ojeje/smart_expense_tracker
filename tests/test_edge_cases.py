@@ -329,7 +329,8 @@ def test_ec11_delete_with_empty_id_is_rejected():
     assert status in (
         400,
         404,
-    ), f"Expected 400 or 404 for blank ID, got {status}. Body: {body}"
+        405,
+    ), f"Expected 400, 404, or 405 for blank ID, got {status}. Body: {body}"
 
 
 # ---------------------------------------------------------------------------

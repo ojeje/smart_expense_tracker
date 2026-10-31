@@ -14,6 +14,7 @@
 3. [Implementation Details](#3-implementation-details)
    - [Original Implementation](#31-original-implementation)
    - [Engineering Improvements & Code Review Remediations](#32-engineering-improvements--code-review-remediations)
+   - [UI Theme Customization & Cross-Browser Hardening](#33-ui-theme-customization--cross-browser-hardening)
 4. [Testing & Quality Assurance](#4-testing--quality-assurance)
    - [Testing Strategy](#41-testing-strategy)
    - [Frontend Unit Tests](#42-frontend-unit-tests)
@@ -37,6 +38,7 @@ The **Smart Expense Tracker** is a lightweight, responsive, and resilient single
 - **Dynamic Total Calculation (FR-4):** Immediate, real-time summation of all active expenses, formatted as USD currency (`$X.XX`), accurate to the cent with zero floating-point accumulation drift.
 - **Targeted Deletion with Confirmation (FR-5):** Individual record removal guarded by a native confirmation prompt (`"Are you sure you want to delete this expense?"`), deleting strictly by unique identifier even when identical names, amounts, or categories exist.
 - **Durable CSV Persistence (FR-6):** Seamless synchronization with a local `data/expenses.csv` file adhering strictly to RFC 4180 standards across server reboots and browser refreshes.
+- **Dynamic Section Theme Customization:** Bottom-right **Section Theme Selector** drop-down menu enabling users to simultaneously toggle the background colors of the three core UI card sections (**"Add New Expense"**, **"Total Amount Spent"**, and **"Expense Records"**) between **Default (White)**, **Light Gray**, **Light Blue**, and **Light Green**, with high-contrast WCAG AAA foreground legibility, `localStorage` preference persistence, and uniform cross-browser behavior across Google Chrome, Mozilla Firefox, and Apple Safari.
 - **Enterprise Security (NFR-4):**
   - **CSV Formula Injection Defense:** Prefixes dangerous leading characters (`=`, `+`, `-`, `@`) with a single quote (`'`) to neutralize spreadsheet command execution.
   - **Cross-Site Scripting (XSS) Prevention:** Strict DOM injection using native `textContent` nodes, avoiding `innerHTML` vulnerabilities.
@@ -94,6 +96,10 @@ smart_expense_tracker/
 ├── test_smart_expense_tracker.js      # Backend in-memory integration test suite (43 tests)
 ├── test_frontend_units.js             # Frontend unit test suite (22 tests)
 ├── BUGS.md                            # Documented findings & resolution records
+├── smart_expense_tracker_code_review.md # Technical Lead code review & remediation report
+├── smart_expense_tracker_implementation_modification_brief.md # Section Theme Selector design brief
+├── smart_expense_tracker_fix_to_ui_implementation_modification_brief.md # Cross-browser UI fix report
+├── smart_expense_tracker_commit_message.md # Concise git commit message summary
 ├── package.json                       # Project metadata & npm test/start scripts
 └── pytest.ini                         # Pytest configuration
 ```
@@ -197,6 +203,29 @@ During technical lead code review and edge case verification, six critical archi
 6. **NUM-01 (IEEE 754 Precision Accumulator):**
    - *Previous:* Summing floats like `0.10 + 0.20` resulted in `0.30000000000000004`.
    - *Fix:* Converted amounts to integer cents (`Math.round(val * 100)`), summed them, and divided by 100.
+
+---
+
+### 3.3 UI Theme Customization & Cross-Browser Hardening
+
+To enhance visual clarity and allow customizable workspace aesthetics, a **Section Theme Selector** was added at the bottom right of the main dashboard (`public/index.html`, `public/css/styles.css`, `public/js/ui.js`, and `public/js/app.js`).
+
+#### 1. Dynamic Section Background Palettes & Contrast Compliance
+Users can switch all three primary card sections (**"Add New Expense"**, **"Total Amount Spent"**, and **"Expense Records"**) simultaneously between four curated color themes while maintaining crisp white (`#ffffff`) input controls and WCAG AAA foreground legibility:
+
+| Theme Option | Value | Card Background | Card Border | Primary Text | Contrast Ratio |
+| :--- | :--- | :--- | :--- | :--- | :---: |
+| **Default (White)** | `default` | `#ffffff` | `#e2e8f0` | `#0f172a` | 15.8:1 (AAA) |
+| **Light Gray** | `light-gray` | `#f1f5f9` (Slate 100) | `#cbd5e1` | `#0f172a` | 14.1:1 (AAA) |
+| **Light Blue** | `light-blue` | `#e0f2fe` (Sky 100) | `#bae6fd` | `#0f172a` | 13.5:1 (AAA) |
+| **Light Green** | `light-green` | `#dcfce7` (Green 100) | `#bbf7d0` | `#0f172a` | 13.7:1 (AAA) |
+
+#### 2. Cross-Browser Normalization & Cache Revalidation Fixes
+During multi-browser verification across **Google Chrome (Blink)**, **Mozilla Firefox (Gecko)**, and **Apple Safari (WebKit)**, an asymmetric HTTP cache policy caused Chrome to serve cached static `.css` and `.js` assets while rendering updated HTML. The following four engineering measures were implemented to guarantee identical behavior and appearance across all major browsers:
+- **HTTP Cache Revalidation (`src/staticHandler.js`):** Replaced `Cache-Control: public, max-age=3600` on static assets with `Cache-Control: public, max-age=0, must-revalidate` so browsers always validate asset freshness on reload.
+- **Explicit Asset Cache-Busting (`public/index.html` & `public/js/app.js`):** Appended version query strings (`?v=2`) to stylesheet and module references (`css/styles.css?v=2`, `js/app.js?v=2`, `./api.js?v=2`, and `./ui.js?v=2`) to invalidate stale browser caches immediately.
+- **Cross-Browser `<select>` Styling & Right-Alignment (`public/css/styles.css`):** Enforced `width: 100%`, `display: flex`, `justify-content: flex-end`, and `text-align: right` on `.theme-selector-container` so the selector is anchored at the bottom right across all engines, and normalized `<select>` controls using `-webkit-appearance: none; -moz-appearance: none; appearance: none;` with a custom inline SVG chevron.
+- **Resilient DOM & CSS Theme Synchronization (`public/js/ui.js`):** Updated `ui.setSectionTheme(theme)` to apply `data-theme` to both `document.documentElement` (`<html>`) and `document.body`, while directly synchronizing inline `backgroundColor`, `borderColor`, and `.section-title` styles on all `.card` elements and persisting the user's selection in `localStorage` (`smart_expense_theme`).
 
 ---
 

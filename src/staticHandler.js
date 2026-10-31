@@ -50,7 +50,7 @@ export async function serveStatic(req, res) {
     res.writeHead(200, {
       'Content-Type': contentType,
       'Content-Length': stats.size,
-      'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=3600'
+      'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=0, must-revalidate'
     });
 
     if (req.method === 'HEAD') {

@@ -1,7 +1,7 @@
 // public/js/app.js
-import api from './api.js';
+import api from './api.js?v=2';
 import state from './state.js';
-import ui from './ui.js';
+import ui from './ui.js?v=2';
 import { validateExpenseForm } from './validator.js';
 
 class AppController {
@@ -11,7 +11,20 @@ class AppController {
 
   async init() {
     this.bindEvents();
+    this.initTheme();
     await this.loadInitialData();
+  }
+
+  /**
+   * Initializes the section theme from localStorage or default
+   */
+  initTheme() {
+    try {
+      const savedTheme = localStorage.getItem('smart_expense_theme') || 'default';
+      ui.setSectionTheme(savedTheme);
+    } catch {
+      ui.setSectionTheme('default');
+    }
   }
 
   /**
@@ -25,6 +38,19 @@ class AppController {
     ui.categorySelect.addEventListener('change', (e) => {
       ui.handleCategoryChange(e.target.value);
     });
+
+    // Section Theme Dropdown Change (Toggles background of all three sections)
+    if (ui.themeSelect) {
+      ui.themeSelect.addEventListener('change', (e) => {
+        const theme = e.target.value;
+        ui.setSectionTheme(theme);
+        try {
+          localStorage.setItem('smart_expense_theme', theme);
+        } catch {
+          // Graceful fallback if localStorage is restricted
+        }
+      });
+    }
 
     // Table Event Delegation for Delete Buttons
     ui.tableBody.addEventListener('click', (e) => {

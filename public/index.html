@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Smart Expense Tracker for ABC & Co Inc">
   <title>Smart Expense Tracker</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=2">
 </head>
 <body>
   <div class="app-container">
@@ -114,10 +114,21 @@
         </table>
       </div>
     </section>
+
+    <!-- Section Background Color Theme Selector (Bottom Right) -->
+    <div class="theme-selector-container">
+      <label for="theme-select" class="theme-label">Section Theme:</label>
+      <select id="theme-select" class="theme-select" aria-label="Toggle section background colors">
+        <option value="default">Default (White)</option>
+        <option value="light-gray">Light Gray</option>
+        <option value="light-blue">Light Blue</option>
+        <option value="light-green">Light Green</option>
+      </select>
+    </div>
   </div>
 
   <!-- Native ES Module Application Bootstrap -->
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/app.js?v=2"></script>
 </body>
 </html>
 

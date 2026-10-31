@@ -17,6 +17,45 @@ class UIManager {
     this.tableBody = document.getElementById('expense-table-body');
     this.emptyState = document.getElementById('empty-state');
     this.submitBtn = document.getElementById('btn-submit');
+    this.themeSelect = document.getElementById('theme-select');
+  }
+
+  /**
+   * Sets the background color theme across all three card sections
+   * @param {string} theme ('default' | 'light-gray' | 'light-blue' | 'light-green')
+   */
+  setSectionTheme(theme) {
+    const normalizedTheme = theme || 'default';
+    const palettes = {
+      'default': { bg: '#ffffff', border: '#e5e7eb', titleColor: '#1f2937' },
+      'light-gray': { bg: '#f1f5f9', border: '#cbd5e1', titleColor: '#1f2937' },
+      'light-blue': { bg: '#e0f2fe', border: '#93c5fd', titleColor: '#0c4a6e' },
+      'light-green': { bg: '#dcfce7', border: '#86efac', titleColor: '#064e3b' }
+    };
+    const palette = palettes[normalizedTheme] || palettes['default'];
+
+    if (normalizedTheme === 'default') {
+      document.documentElement.removeAttribute('data-theme');
+      document.body.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', normalizedTheme);
+      document.body.setAttribute('data-theme', normalizedTheme);
+    }
+
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card) => {
+      card.style.backgroundColor = palette.bg;
+      card.style.borderColor = palette.border;
+      const title = card.querySelector('.section-title');
+      if (title) {
+        title.style.borderBottomColor = palette.border;
+        title.style.color = palette.titleColor;
+      }
+    });
+
+    if (this.themeSelect && this.themeSelect.value !== normalizedTheme) {
+      this.themeSelect.value = normalizedTheme;
+    }
   }
 
   /**

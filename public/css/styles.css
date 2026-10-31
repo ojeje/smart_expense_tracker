@@ -68,6 +68,7 @@ body {
   border: 1px solid var(--border-color);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .section-title {
@@ -136,6 +137,18 @@ body {
   background-color: #fff;
   color: var(--text-main);
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-group select,
+.theme-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%234b5563' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px 12px;
+  padding-right: 2.25rem;
 }
 
 .form-group input:focus,
@@ -293,5 +306,110 @@ body {
   .total-value {
     font-size: 1.5rem;
   }
+}
+
+/* --- 11. Section Background Theme Selector & Palettes --- */
+.theme-selector-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: right;
+  gap: 0.5rem;
+  margin-top: -0.5rem;
+  margin-bottom: 2rem;
+}
+
+.theme-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.theme-select {
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  color: var(--text-main);
+  font-size: 0.875rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.theme-select:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* --- Theme Palettes (Applies to all three card sections simultaneously) --- */
+
+/* 1. Light Gray Theme */
+:root[data-theme="light-gray"],
+body[data-theme="light-gray"] {
+  --bg-card: #f1f5f9;
+  --border-color: #cbd5e1;
+}
+[data-theme="light-gray"] .card {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+[data-theme="light-gray"] .card .section-title {
+  border-bottom-color: #cbd5e1;
+}
+[data-theme="light-gray"] .expense-table thead th {
+  background-color: #e2e8f0;
+  border-bottom-color: #cbd5e1;
+}
+[data-theme="light-gray"] .expense-table tbody td {
+  border-bottom-color: #e2e8f0;
+}
+
+/* 2. Light Blue Theme */
+:root[data-theme="light-blue"],
+body[data-theme="light-blue"] {
+  --bg-card: #e0f2fe;
+  --border-color: #93c5fd;
+}
+[data-theme="light-blue"] .card {
+  background-color: #e0f2fe;
+  border-color: #93c5fd;
+}
+[data-theme="light-blue"] .card .section-title {
+  border-bottom-color: #93c5fd;
+  color: #0c4a6e;
+}
+[data-theme="light-blue"] .expense-table thead th {
+  background-color: #bae6fd;
+  border-bottom-color: #93c5fd;
+  color: #0369a1;
+}
+[data-theme="light-blue"] .expense-table tbody td {
+  border-bottom-color: #bae6fd;
+}
+
+/* 3. Light Green Theme */
+:root[data-theme="light-green"],
+body[data-theme="light-green"] {
+  --bg-card: #dcfce7;
+  --border-color: #86efac;
+}
+[data-theme="light-green"] .card {
+  background-color: #dcfce7;
+  border-color: #86efac;
+}
+[data-theme="light-green"] .card .section-title {
+  border-bottom-color: #86efac;
+  color: #064e3b;
+}
+[data-theme="light-green"] .expense-table thead th {
+  background-color: #bbf7d0;
+  border-bottom-color: #86efac;
+  color: #047857;
+}
+[data-theme="light-green"] .expense-table tbody td {
+  border-bottom-color: #bbf7d0;
 }
 
